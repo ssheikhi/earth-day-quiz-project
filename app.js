@@ -25,13 +25,7 @@ function startQuiz(currentIndex) {
         const img = document.createElement('img');
         img.src = result.image;
         img.alt = 'Description of the image';
-        img.width = 500; 
-
-        // Append the image to a specific element in the DOM
-        document.getElementById('result-container').appendChild(img);
-
-
-        
+        document.getElementById('result-container').appendChild(img);        
     }
 
 }
