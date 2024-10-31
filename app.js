@@ -1,34 +1,45 @@
 import {steps, results} from './objects.js';
 
-const userAnswers = [];
+let userAnswers = [];
 const cards = document.querySelectorAll('.card');
 const h2elements = document.querySelectorAll('h2');
-
+const restartBtn = document.getElementById('restart-btn');
+const resultElement = document.getElementById('result-container')
 let nextCard = 0
+let score = 0;
+let result = 0;
 
-function init(){
+// Store event listeners
+let eventListeners = [];
+
+function init(){    
     for(let i=1; i<cards.length ; i++){        
         cards[i].style.display = 'none';
         h2elements[i].style.display = 'none';
     } 
+    restartBtn.classList.toggle('hidden');    
     startQuiz(0);
 }
 function startQuiz(currentIndex) {
     console.log(`start quiz current index is:  ${currentIndex}`);
-    console.log(`cards.length ${cards.length}`);
     if (currentIndex < cards.length) {
      attachEventListener(currentIndex);
     } 
     else
     {
-        const score = calculatescore(userAnswers);
-        const result = interpretResult(score);
+        console.log(`user answers ${userAnswers }`);
+        
+        score = calculatescore(userAnswers);
+        result = interpretResult(score);
         console.log("Quiz complete!");
         console.log(`user result: ${result.description} `);
         const img = document.createElement('img');
         img.src = result.image;
         img.alt = 'Description of the image';
-        document.getElementById('result-container').appendChild(img);        
+        img.id = 'result-img';
+        resultElement.appendChild(img);
+        restartBtn.classList.toggle('hidden'); 
+        restartBtn.addEventListener('click', restartGame);       
     }
 
 }
@@ -37,8 +48,7 @@ function toggleDisplay(currentIndex, nextCard){
     h2elements[currentIndex].style.display = 'none'
     if (cards[nextCard] !== null && cards[nextCard] !== undefined ) {
         cards[nextCard].style.display = 'flex' ;  
-        h2elements[nextCard].style.display = 'block';
- 
+        h2elements[nextCard].style.display = 'block'; 
     }   
 }
 
@@ -47,21 +57,24 @@ function toggleDisplay(currentIndex, nextCard){
     const currentButtons = document.querySelectorAll(`#${currentCardId} button`);
 
     currentButtons.forEach((button, choiceIndex) => {
-        button.addEventListener('click', () => {
-            console.log(`user choosed ${button.textContent} with index ${choiceIndex}`);
-             console.log(steps[currentIndex].choices[choiceIndex].score);
-            
-            userAnswers.push(steps[currentIndex].choices[choiceIndex].score);
-                nextCard = currentIndex + 1;
-                toggleDisplay(currentIndex, nextCard); 
-                startQuiz(nextCard); 
-        });
+        const handler = () => {
+            // userAnswers.push(steps[currentIndex].choices[choiceIndex].score);
+            userAnswers.push(Math.floor(Math.random() * 10) + 1);
+            nextCard = currentIndex + 1;
+            toggleDisplay(currentIndex, nextCard); 
+            startQuiz(nextCard); 
+        };
+        button.addEventListener('click', handler);
+
+        // Store the listener for future removal
+        eventListeners.push({ button, handler });
+    
     });
 }
 function calculatescore(userAnswers) {
     let score = 0;
     userAnswers.forEach(answer => {
-        score = score + parseInt(answer);
+    score = score + parseInt(answer);
     });
     return score;
 }
@@ -106,7 +119,25 @@ function interpretResult(score) {
 
     return results[resultIndex];
 }
-
+function restartGame(){
+    // Remove all event listeners
+    eventListeners.forEach(({ button, handler }) => {
+        button.removeEventListener('click', handler);
+    });
+    eventListeners = []; // Clear the list of listeners
+    userAnswers = [];
+    score = 0
+    result = 0
+    // Reset the display and other elements
+    cards[0].style.display = 'flex';
+    h2elements[0].style.display = 'block'
+    const existingImg = document.getElementById('result-img');
+    if (existingImg) {
+        console.log('remove img');        
+        existingImg.remove();
+    }
+    init();
+}
 init();
 
 //start the game
