@@ -2,11 +2,14 @@ import {steps, results} from './objects.js';
 
 const userAnswers = [];
 const cards = document.querySelectorAll('.card');
+const h2elements = document.querySelectorAll('h2');
+
 let nextCard = 0
 
 function init(){
     for(let i=1; i<cards.length ; i++){        
         cards[i].style.display = 'none';
+        h2elements[i].style.display = 'none';
     } 
     startQuiz(0);
 }
@@ -31,8 +34,11 @@ function startQuiz(currentIndex) {
 }
 function toggleDisplay(currentIndex, nextCard){
     cards[currentIndex].style.display = 'none';
+    h2elements[currentIndex].style.display = 'none'
     if (cards[nextCard] !== null && cards[nextCard] !== undefined ) {
-        cards[nextCard].style.display = 'block' ;   
+        cards[nextCard].style.display = 'flex' ;  
+        h2elements[nextCard].style.display = 'block';
+ 
     }   
 }
 
