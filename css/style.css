@@ -1,5 +1,6 @@
 * {
     box-sizing: border-box;
+    
 }
 
 body {
@@ -8,8 +9,22 @@ body {
     padding: 0;
     font-family: sans-serif, 'Segoe UI', 'Open Sans', 'Helvetica Neue';
     background-color: #e5e5e5;
+    background-image: url("/images/neutral-abstract-earth-tone-background.jpg");
+    background-size: cover;
 }
 
+.title-container {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .title-container h1 {
+    font-size: 36px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
 .main {
     display: flex;
     flex-direction: column;
@@ -25,7 +40,7 @@ body {
 
 .card {
     display: flex;
-    gap: 20px;
+    gap: 50px;
     flex-wrap: wrap;
     justify-content: center;
     width: 80%;

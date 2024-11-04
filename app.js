@@ -5,6 +5,8 @@ const cards = document.querySelectorAll('.card');
 const h2elements = document.querySelectorAll('h2');
 const restartBtn = document.getElementById('restart-btn');
 const resultElement = document.getElementById('result-container')
+const startButton = document.getElementById("start-button");
+
 let nextCard = 0
 let score = 0;
 let result = 0;
@@ -138,6 +140,21 @@ function restartGame(){
     }
     init();
 }
+
+function startGame() {
+    const username = document.getElementById("username").value;
+    if (username) {
+        document.getElementById("greeting").style.display = "block";
+        document.getElementById("greeting").querySelector("#greeting h2").textContent = `Hello, ${username}! Let's start the game.`;
+        document.querySelector(".welcome-container").style.display = "none"; // Hide the input section after greeting
+        
+        init(); // Start the quiz after displaying the greeting
+    } else {
+        alert("Please enter your name to start the game.");
+    }
+}
+
+
 init();
 
 //start the game
